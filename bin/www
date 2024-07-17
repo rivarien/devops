@@ -67,66 +67,54 @@ function onListening() {
 var fs = require('fs');
 var https = require('https');
 var port = normalizePort(process.env.PORT || '8080');
-var https_port    =   process.env.PORT_HTTPS || 8443;
-var options = {}
+var https_port = process.env.PORT_HTTPS || 8443;
+var options = {};
 
-if(process.env.ENV !== "DEV") {
-  var privatekey = fs.readFileSync('privatekey.pem', "utf8")
-  console.log(typeof privatekey)
-  var cert = fs.readFileSync('server.crt', "utf8")
-  var header = "-----BEGIN PRIVATE KEY-----"
-  var footer = "-----END PRIVATE KEY-----"
-  console.log(privatekey.split(header))
-  privatekey= privatekey.split(header)[1]
-  privatekey = privatekey.split(footer)[0]
-  privatekey = header + "\n" + privatekey.replace(/ /g, "\n") + footer+"\n"
+if (process.env.ENV !== "DEV") {
+  try {
+    var privatekey = fs.readFileSync('privatekey.pem', "utf8");
+    var cert = fs.readFileSync('server.crt', "utf8");
 
-  console.log(privatekey)
+    var header = "-----BEGIN PRIVATE KEY-----";
+    var footer = "-----END PRIVATE KEY-----";
+    privatekey = privatekey.split(header)[1];
+    privatekey = privatekey.split(footer)[0];
+    privatekey = header + "\n" + privatekey.replace(/ /g, "\n") + footer + "\n";
 
+    var header = "-----BEGIN CERTIFICATE-----";
+    var footer = "-----END CERTIFICATE-----";
+    cert = cert.split(header)[1];
+    cert = cert.split(footer)[0];
+    cert = header + "\n" + cert.replace(/ /g, "\n") + footer + "\n";
 
-  var header = "-----BEGIN CERTIFICATE-----"
-  var footer = "-----END CERTIFICATE-----"
-  cert= cert.split(header)[1]
-  cert = cert.split(footer)[0]
-  cert = header + "\n" + cert.replace(/ /g, "\n") + footer+"\n"
+    options = {
+      key: privatekey,
+      cert: cert
+    };
+    app.set("port", https_port);
 
-  var options = {
-    key  : privatekey,
-    cert : cert
-  };
-  app.set("port",https_port);
+    var server = https.createServer(options, app).listen(https_port, function () {
+      console.log('HTTPS server listening on port ' + https_port);
+    });
 
-  /*
-  ° Create HTTPS server.
-  */
-  var server = https.createServer(options, app).listen(https_port, function () {
-  console.log('Magic happens on port ' + https_port);
-  });
+    server.on('error', onError);
+    server.on('listening', onListening);
 
-  /**
-  * Listen on provided port, on all network interfaces.
-  */
-
-  server.on('error', onError);
-  server.on('listening', onListening);
-
-  // Redirect from http port to https
-  http.createServer(function (req, res) {
-    res.writeHead(301, { "Location": "https://" + req.headers['host'].replace(port,https_port) + req.url });
-    console.log("http requet, will go to >> ");
-    console.log("https://" + req.headers['host'].replace(port,https_port) + req.url );
-    res.end();
-  }).listen(port);
+    // Redirect from http port to https
+    http.createServer(function (req, res) {
+      res.writeHead(301, { "Location": "https://" + req.headers['host'].replace(port, https_port) + req.url });
+      console.log("http request, will redirect to >> ");
+      console.log("https://" + req.headers['host'].replace(port, https_port) + req.url);
+      res.end();
+    }).listen(port);
+  } catch (error) {
+    console.error("Error setting up HTTPS server:", error);
+    process.exit(1);
+  }
 } else {
-
   var server = http.createServer(app);
-
-  /**
-   * Listen on provided port, on all network interfaces.
-   */
-
   server.listen(port);
   server.on('error', onError);
   server.on('listening', onListening);
-
+  console.log('HTTP server listening on port ' + port);
 }
