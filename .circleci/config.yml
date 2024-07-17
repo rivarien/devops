@@ -5,6 +5,13 @@ jobs:
       - image: cimg/node:14.0
     steps:
       - checkout
+      - run: 
+          name: List directory contents
+          command: |
+            echo "Project root:"
+            ls -la
+            echo "Test directory:"
+            ls -la test || echo "No test directory found"
       - run: npm ci
       - run: npm test
 workflows:
