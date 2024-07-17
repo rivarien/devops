@@ -5,8 +5,7 @@ jobs:
       - image: cimg/node:14.0
     steps:
       - checkout
-      - run: npm install
-      - run: npm install --only=dev
+      - run: npm ci
       - run: npm test
 workflows:
   version: 2
