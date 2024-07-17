@@ -21,33 +21,7 @@ jobs:
       - checkout
       - add_ssh_keys:
           fingerprints:
-            - "-----BEGIN RSA PRIVATE KEY-----
-              MIIEowIBAAKCAQEAhFJjreXqhXqPDNWLOdhs0/lOY9q1flCRgY6/VfIdaRB20z3A
-              now6pPqxHDFF/WhwKOBB4/JKNn9IDSOXo+phBKoor3EHWZQVuhGt3ojGOlWY3s6U
-              1lr3kqLw7lKwEy+RXodNkmvAdstwvWEENeojm8a38iPBUm1vOb/LW0CzObQJ6Oia
-              S4/WwzENTyR+HRR4q4UDX7tSfDxslKH4VT3d73pJYs4XT/UMA5t97hNJkrwJr5Ns
-              l7CKDQUnVp4Fk6IJjHyMXkfCNuiDzFGt9lvdbzsHBqqqmp/iEgj27bLC0oMshmsI
-              r6F/TS976sXLcte+80jzTbhqf1+YaEjU6LROwQIDAQABAoIBABfa3puQMpqDwNxY
-              dzQjf2Mrs+Uunb+6+LB5sqbk8kZpsHJe1KYAs+XgSCPEAlEwDeBgpaBZouV2RuAP
-              hZwIehskLheK8f9FQjF8VHMlB0+m9NteNNj8J1vpQjRE9fdPgQ6gp+x4vobsIFQT
-              9HVf07GWvrzJk2Wv0vh/SkMWQ/ln5gVsGF/1/X9i9SMU1veD1K87jECBazN7MYES
-              aeaAH2X2+Hr4Y74+kFYMrPFZbdOVJPiZcso+83hKxfr8SNlQ2J6ghBlPSdod+j8b
-              dtnjTjOx8V85IbrsdyoTrY/Qf22YX5v+rt9WfWMIFigD5Q4uNtN0/zvgyv5o14HH
-              M6IJOkECgYEA8OjW3FgDVB/BXQ8orOWBsouqNe1Q8HB9vaeJDIYJPRLBFLLnx740
-              RFoIaZDI8kBukHt6sKsrutfEJzoasHcqu6CBAALYqB3SxRfgfcXZT9Ag4G4zTDK5
-              J6gmKuaUAZQNPjJ/FQEQBjt90PGBJ/+l0AZeJwJMEOepgo/DM15Y+DkCgYEAjJxE
-              UWsUcQPCck1UzdnYPDXSBEkwjyNJ6wwgdkQJGc69cWZ+UErUPw7Y+olPePLx9cvj
-              nnD0k2wnXK37ZRxBhwFM5L39j7irOGMQ1ZcwMY6LjmwJibIxyDQ4IYQ/d6NODv6G
-              NGxufHAcM8d/P0ez6mz/MZegdniJFYHhZ7SAuskCgYAYJp9zk3cx9cUCuURQoOlx
-              psK3iUT19bEFVEhO8xj2AG1Oz+igg5bly0jQnG0orADphxdzopVNs9e8Pvzx9+BW
-              0u5bu+1QXT0F+TDOKwlwEONa3HFUEDmzmg3JezgXOGpjc9h9mI+ssEYarjtOcTiE
-              ND84FejeQPsjVZoyCiFNMQKBgC+dh2EO4tg2jrVITKx81cXl7921rzT5nUF0VNXX
-              ykEsCmkJbULhZCiKbZ3Bu+DYXGmBBu6Tj68Qk+/FlvkxbVs7bH+VevUdcxXgLkY2
-              MYLGo6myGjS/3C3QySVIdHmeGoPnWykLgwquqE48g3G5ZUrAaFax4wvbW4il99+3
-              d1RJAoGBAIIXsPNjy1TiVV58ghfTUd0keZl3sxx4iMxDG9ZMKTqgy5kHBOhzDOLo
-              pu0m17xPEE+JHvqK1Rn5gNAiIKH35FhuoTRDLxdLF3t1KneriOBMBx7nlyeYCDoF
-              /XrwcpNIfWEsNRUl5XQ7nuThYckWsWxWGlqyjNcMjkeE1iz9rTvl
-              -----END RSA PRIVATE KEY-----"
+            - "SHA256:orCr9dLlMsiqNy1XKxWeHhLXbHTX0W+Oa/xmuDCZtC8"
       - run:
           name: Deploy to EC2
           command: |
@@ -64,8 +38,8 @@ workflows:
     jobs:
       - build
       - deploy:
-        requires:
-          - build
-        filters:
-          branches:
-            only: main
+          requires:
+            - build
+          filters:
+            branches:
+              only: main
