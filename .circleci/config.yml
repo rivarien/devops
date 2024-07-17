@@ -28,8 +28,14 @@ jobs:
             ssh -o StrictHostKeyChecking=no ec2-user@54.75.117.188 \<<EOF
               cd ~/devops
               git pull origin main
-              npm ci
-              pm2 restart all
+              npm install
+              pm2 describe mathapp > /dev/null
+              if [ $? -eq 0 ]; then
+                pm2 restart mathapp
+              else
+                pm2 start ~/devops/bin/www --name mathapp
+              fi
+              pm2 save
             EOF
 
 workflows:
