@@ -12,8 +12,8 @@ app.set('port', port);
 app.set('securePort', securePort);
 
 var options = {
-  key: fs.readFileSync('/home/ec2-user/ssl/privatekey.pem'),
-  cert: fs.readFileSync('/home/ec2-user/ssl/certificate.pem')
+  key: fs.readFileSync('/etc/ssl/private/selfsigned.key'),
+  cert: fs.readFileSync('/etc/ssl/certs/selfsigned.crt')
 };
 
 var server = http.createServer(app);
@@ -42,10 +42,6 @@ function normalizePort(val) {
 
   return false;
 }
-
-/**
- * Event listener for HTTP server "error" event.
- */
 
 function onError(error) {
   if (error.syscall !== 'listen') {
