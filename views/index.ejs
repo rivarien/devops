@@ -11,9 +11,19 @@
       <li>Milk</li>
       <li>Bread</li>
       <li>Butter</li>
-      <li>Honey</li>
-      <li>Chocolate</li>
       <li>add more...</li>
     </ul>
+    <script>
+      setInterval(() => {
+        fetch('/version')
+          .then(res => res.text())
+          .then(version => {
+            if (window.appVersion && window.appVersion !== version) {
+              location.reload();
+            }
+            window.appVersion = version;
+          });
+      }, 30000);  // Check every 30 seconds
+      </script>
   </body>
 </html>
