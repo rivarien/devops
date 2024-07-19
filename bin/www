@@ -1,32 +1,32 @@
 var app = require('../app');
 var debug = require('debug')('phishsense:server');
 var http = require('http');
-/*var https = require('https');*/
+var https = require('https');
 var fs = require('fs');
 
 
 var port = normalizePort(process.env.PORT || '3000');
-/*var securePort = normalizePort(process.env.SECURE_PORT || '8443');*/
+var httpsPort = normalizePort(process.env.HTTPS_PORT || '3001');
 
 app.set('port', port);
-/*app.set('securePort', securePort);*/
+app.set('httpsPort', httpsPort);
 
-var options = {
+var httpServer = http.createServer(app);
+
+var httpsOptions = {
   key: fs.readFileSync('/etc/ssl/private/selfsigned.key'),
   cert: fs.readFileSync('/etc/ssl/certs/selfsigned.crt')
 };
-
-var server = http.createServer(app);
-/*var secureServer = https.createServer(options, app);*/
+var httpsServer = https.createServer(httpsOptions, app);
 
 
-server.listen(port);
-server.on('error', onError);
-server.on('listening', onListening);
+httpServer.listen(port);
+httpServer.on('error', onError);
+httpServer.on('listening', onListening);
 
-/*secureServer.listen(securePort);
-secureServer.on('error', onError);
-secureServer.on('listening', onListening);*/
+httpsServer.listen(httpsPort);
+httpsServer.on('error', onError);
+httpsServer.on('listening', onListening);
 
 
 function normalizePort(val) {
@@ -80,4 +80,4 @@ function onListening() {
 }
 
 console.log('HTTP server running on port ' + port);
-/*console.log('HTTPS server running on port ' + securePort);*/
+console.log('HTTPS server running on port ' + httpsPort);
