@@ -21,11 +21,11 @@ jobs:
       - checkout
       - add_ssh_keys:
           fingerprints:
-            - "SHA256:orCr9dLlMsiqNy1XKxWeHhLXbHTX0W+Oa/xmuDCZtC8"
+            - "SHA256:QLNm9IdEotAwQqFkhrlBzbXbsbigOOnGOCP0wbc5u2U"
       - run:
           name: Deploy to EC2
           command: |
-            ssh -o StrictHostKeyChecking=no ec2-user@54.75.117.188 \<<EOF
+            ssh -o StrictHostKeyChecking=no -o UserKnownHostsFile=/dev/null ec2-user@54.75.117.188 << EOF
               cd ~/devops
               git pull origin main
               npm install
@@ -35,7 +35,7 @@ jobs:
               else
                 pm2 start ~/devops/bin/www --name mathapp
               fi
-              pm2 save
+              pm2 save  
             EOF
 
 workflows:
