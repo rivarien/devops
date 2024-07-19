@@ -5,8 +5,8 @@ jobs:
       - image: cimg/node:14.0
     steps:
       - add_ssh_keys:
-        fingerprints:
-          - "SHA256:agxD4KzysXdTeyCuydW3aw4TikEVXNYHyxuwtzTiaBk"
+          fingerprints:
+            - "SHA256:agxD4KzysXdTeyCuydW3aw4TikEVXNYHyxuwtzTiaBk"
       - checkout
       - run: 
           name: List directory contents
@@ -28,7 +28,7 @@ jobs:
       - run:
           name: Deploy to EC2
           command: |
-            ssh -o StrictHostKeyChecking=no -o UserKnownHostsFile=/dev/null ec2-user@54.75.117.188 \<< EOF
+            ssh -o StrictHostKeyChecking=no -o UserKnownHostsFile=/dev/null ec2-user@54.75.117.188 << EOF
               cd ~/devops
               git pull origin main
               npm install
